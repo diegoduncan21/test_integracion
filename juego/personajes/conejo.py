@@ -15,3 +15,4 @@ class Conejo(pilas.actores.Martian):
                       offset_disparo=(25,0),
                       offset_origen_actor=(25,23))
         self.velocidad = 8
+        self.ingrediente = None

@@ -5,6 +5,8 @@ sys.path.insert(0, "..")
 import pilas
 
 from personajes.conejo import Conejo
+from personajes.carne import Carne
+from personajes.caldera import Caldera
 
 class EscenaNivelTurorial(pilas.escena.Base):
 
@@ -12,20 +14,32 @@ class EscenaNivelTurorial(pilas.escena.Base):
         pilas.escena.Base.__init__(self)
 
     def iniciar(self):
-        
-        fondo = pilas.fondos.DesplazamientoHorizontal()
 
+        fondo = pilas.fondos.DesplazamientoHorizontal()
         fondo.agregar("selva.jpg")
 
         mapa = self.crear_mapa()
+
+        temporizador = pilas.actores.Temporizador(x=15, y=200)
+        # ajustamos que despues de 3 segundos llame a funcion_callback
+        temporizador.ajustar(10, self.fin_temporizador)
+        # iniciamos temporizador
+        temporizador.iniciar()
+
+
         conejo = Conejo(mapa)
         conejo.aprender(pilas.habilidades.SiempreEnElCentro)
 
-        banana1 = pilas.actores.Banana(x=-200, y=100)
+        banana = pilas.actores.Banana(x=-200, y=100)
+        carne =  Carne(x=200, y=-100)
 
-        bananas = [banana1]
+        caldera = Caldera(x=-200, y=-185)
 
-        pilas.escena_actual().colisiones.agregar(conejo, bananas, self.llevar)
+        # Colisiones
+        pilas.escena_actual().colisiones.agregar(conejo, banana, self.llevar)
+        pilas.escena_actual().colisiones.agregar(conejo, carne, self.llevar)
+
+        pilas.escena_actual().colisiones.agregar(conejo, caldera, self.dejar)
 
         pilas.avisar("Usa los direccionales para controlar al personaje.")
 
@@ -52,7 +66,7 @@ class EscenaNivelTurorial(pilas.escena.Base):
             # der
             mapa.pintar_bloque(tope, 19, 7, True)
 
-        # Pinta todo el suelo
+        # Pinta primer piso
         for columna in range(0, 15):
             mapa.pintar_bloque(6, columna, 1)
 
@@ -62,5 +76,18 @@ class EscenaNivelTurorial(pilas.escena.Base):
 
         return mapa
 
-    def llevar(self, conejo, banana):
-        banana.aprender(pilas.habilidades.Imitar, conejo)
+    def llevar(self, conejo, ingrediente):
+        if not conejo.ingrediente:
+            ingrediente.aprender(pilas.habilidades.Imitar, conejo)
+            conejo.ingrediente = ingrediente
+
+    def dejar(self, conejo, caldera):
+        if conejo.ingrediente:
+            ingrediente = conejo.ingrediente
+            ingrediente.eliminar_habilidad(pilas.habilidades.Imitar)
+            caldera.ingredientes.append(ingrediente)
+            conejo.ingrediente = None
+            ingrediente.eliminar()
+
+    def fin_temporizador(self):
+        pilas.avisar("Temporizador: el tiempo se acabo!")
