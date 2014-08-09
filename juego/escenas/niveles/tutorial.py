@@ -44,9 +44,9 @@ class EscenaNivelTurorial(pilas.escena.Base):
         conejo.aprender(pilas.habilidades.SiempreEnElCentro)
 
         banana = pilas.actores.Banana(x=-200, y=100)
-        carne =  Carne(x=200, y=-100)
+        self.carne = carne =  Carne(x=200, y=-100)
 
-        caldera = Caldera(x=-200, y=-185)
+        self.caldera = caldera = Caldera(x=-200, y=-185)
 
         # Colisiones
         pilas.escena_actual().colisiones.agregar(conejo, banana, self.llevar)
@@ -54,8 +54,7 @@ class EscenaNivelTurorial(pilas.escena.Base):
 
         pilas.escena_actual().colisiones.agregar(conejo, caldera, self.dejar)
 
-        pilas.avisar("""Usa los direccionales para controlar al personaje.
-		Presiona la barra espaciadora para arojar ojotas y eliminar obstaculos""")
+        pilas.avisar("""Comandos: < ^ > y barra espaciadora""")
 
     def crear_mapa(self, filas=15, columnas=20):
         mapa = pilas.actores.Mapa(filas=filas, columnas=columnas)
@@ -104,4 +103,37 @@ class EscenaNivelTurorial(pilas.escena.Base):
             ingrediente.eliminar()
 
     def fin_temporizador(self):
-        pilas.avisar("Temporizador: el tiempo se acabo!")
+		if self.carne in self.caldera.ingredientes:
+			pilas.cambiar_escena(EscenaGanador())
+		else:
+			pilas.cambiar_escena(EscenaPerdedor())
+		
+
+class EscenaGanador(pilas.escena.Base):
+	def __init__(self):
+		pilas.escena.Base.__init__(self)
+
+	def iniciar(self):
+		pilas.fondos.Selva()
+
+		opciones = [
+			('Genial! Conseguiste todos los ingredientes!\nJuega el siguiente nivel...', self.primer_desafio)
+		]
+
+		self.menu = pilas.actores.Menu(opciones)
+	def primer_desafio(self):
+		pilas.cambiar_escena(EscenaPrimerDesafio())
+
+
+class EscenaPerdedor(pilas.escena.Base):
+	def __init__(self):
+		pilas.escena.Base.__init__(self)
+
+	def iniciar(self):
+		pilas.fondos.Selva()
+
+		opciones = [('Se termino el tiempo!\nIntentalo de nuevo...', self.primer_desafio)]
+
+		self.menu = pilas.actores.Menu(opciones)
+	def primer_desafio(self):
+		pilas.cambiar_escena(EscenaPrimerDesafio())
