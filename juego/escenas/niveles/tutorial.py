@@ -7,19 +7,22 @@ import pilas
 from personajes.conejo import Conejo
 from personajes.carne import Carne
 from personajes.caldera import Caldera
+from personajes.barra import Barra
+
 
 class EscenaPrimerDesafio(pilas.escena.Base):
-	def __init__(self):
-		pilas.escena.Base.__init__(self)
+    def __init__(self):
+        pilas.escena.Base.__init__(self)
 
-	def iniciar(self):
-		pilas.fondos.Selva()
+    def iniciar(self):
+        pilas.fondos.Selva()
 
-		opciones = [('Comenzar a jugar', self.primer_desafio)]
+        opciones = [('Comenzar a jugar', self.primer_desafio)]
 
-		self.menu = pilas.actores.Menu(opciones)
-	def primer_desafio(self):
-		pilas.cambiar_escena(EscenaNivelTurorial())
+        self.menu = pilas.actores.Menu(opciones)
+    def primer_desafio(self):
+        pilas.cambiar_escena(EscenaNivelTurorial())
+
 
 class EscenaNivelTurorial(pilas.escena.Base):
 
@@ -33,12 +36,14 @@ class EscenaNivelTurorial(pilas.escena.Base):
 
         mapa = self.crear_mapa()
 
-        temporizador = pilas.actores.Temporizador(x=15, y=200)
-        # ajustamos que despues de 3 segundos llame a funcion_callback
+        barra = Barra(x=150, y=200)
+        barra.aprender(pilas.habilidades.SeMantieneEnPantalla)
+
+        temporizador = pilas.actores.Temporizador(x=0, y=200)
+        # ajustamos que despues de 10 segundos llame a funcion_callback
         temporizador.ajustar(10, self.fin_temporizador)
         # iniciamos temporizador
         temporizador.iniciar()
-
 
         conejo = Conejo(mapa)
         conejo.aprender(pilas.habilidades.SiempreEnElCentro)
@@ -55,7 +60,7 @@ class EscenaNivelTurorial(pilas.escena.Base):
         pilas.escena_actual().colisiones.agregar(conejo, caldera, self.dejar)
 
         pilas.avisar("""Usa los direccionales para controlar al personaje.
-		Presiona la barra espaciadora para arojar ojotas y eliminar obstaculos""")
+        Presiona la barra espaciadora para arojar ojotas y eliminar obstaculos""")
 
     def crear_mapa(self, filas=15, columnas=20):
         mapa = pilas.actores.Mapa(filas=filas, columnas=columnas)
