@@ -8,6 +8,7 @@ from personajes.conejo import Conejo
 from personajes.carne import Carne
 from personajes.caldera import Caldera
 from personajes.barra import Barra
+from personajes.guiso import Guiso
 
 
 class EscenaPrimerDesafio(pilas.escena.Base):
@@ -17,9 +18,14 @@ class EscenaPrimerDesafio(pilas.escena.Base):
     def iniciar(self):
         pilas.fondos.Selva()
 
+        guiso = Guiso(y=100)
+        barra = Barra(y=-60)
+
         opciones = [('Comenzar a jugar', self.primer_desafio)]
 
-        self.menu = pilas.actores.Menu(opciones)
+        self.menu = pilas.actores.Menu(opciones,
+                                       color_resaltado=pilas.colores.verde,
+                                       y=-150)
     def primer_desafio(self):
         pilas.cambiar_escena(EscenaNivelTurorial())
 
@@ -33,11 +39,9 @@ class EscenaNivelTurorial(pilas.escena.Base):
 
         fondo = pilas.fondos.DesplazamientoHorizontal()
         fondo.agregar("selva.jpg")
+        fondo.agregar("verduras_2/barreta2.png")
 
         mapa = self.crear_mapa()
-
-        barra = Barra(x=150, y=200)
-        barra.aprender(pilas.habilidades.SeMantieneEnPantalla)
 
         temporizador = pilas.actores.Temporizador(x=0, y=200)
         # ajustamos que despues de 10 segundos llame a funcion_callback
@@ -49,7 +53,7 @@ class EscenaNivelTurorial(pilas.escena.Base):
         conejo.aprender(pilas.habilidades.SiempreEnElCentro)
 
         banana = pilas.actores.Banana(x=-200, y=100)
-        self.carne = carne =  Carne(x=200, y=-100)
+        self.carne = carne =  Carne(x=250, y=-100)
 
         self.caldera = caldera = Caldera(x=-200, y=-185)
 
@@ -108,37 +112,37 @@ class EscenaNivelTurorial(pilas.escena.Base):
             ingrediente.eliminar()
 
     def fin_temporizador(self):
-		if self.carne in self.caldera.ingredientes:
-			pilas.cambiar_escena(EscenaGanador())
-		else:
-			pilas.cambiar_escena(EscenaPerdedor())
-		
+        if self.carne in self.caldera.ingredientes:
+            pilas.cambiar_escena(EscenaGanador())
+        else:
+            pilas.cambiar_escena(EscenaPerdedor())
+        
 
 class EscenaGanador(pilas.escena.Base):
-	def __init__(self):
-		pilas.escena.Base.__init__(self)
+    def __init__(self):
+        pilas.escena.Base.__init__(self)
 
-	def iniciar(self):
-		pilas.fondos.Selva()
+    def iniciar(self):
+        pilas.fondos.Selva()
 
-		opciones = [
-			('Genial! Conseguiste todos los ingredientes!\nJuega el siguiente nivel...', self.primer_desafio)
-		]
+        opciones = [
+            ('Genial! Conseguiste todos los ingredientes!\nJuega el siguiente nivel...', self.primer_desafio)
+        ]
 
-		self.menu = pilas.actores.Menu(opciones)
-	def primer_desafio(self):
-		pilas.cambiar_escena(EscenaPrimerDesafio())
+        self.menu = pilas.actores.Menu(opciones)
+    def primer_desafio(self):
+        pilas.cambiar_escena(EscenaPrimerDesafio())
 
 
 class EscenaPerdedor(pilas.escena.Base):
-	def __init__(self):
-		pilas.escena.Base.__init__(self)
+    def __init__(self):
+        pilas.escena.Base.__init__(self)
 
-	def iniciar(self):
-		pilas.fondos.Selva()
+    def iniciar(self):
+        pilas.fondos.Selva()
 
-		opciones = [('Se termino el tiempo!\nIntentalo de nuevo...', self.primer_desafio)]
+        opciones = [('Se termino el tiempo!\nIntentalo de nuevo...', self.primer_desafio)]
 
-		self.menu = pilas.actores.Menu(opciones)
-	def primer_desafio(self):
-		pilas.cambiar_escena(EscenaPrimerDesafio())
+        self.menu = pilas.actores.Menu(opciones)
+    def primer_desafio(self):
+        pilas.cambiar_escena(EscenaPrimerDesafio())
