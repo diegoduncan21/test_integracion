@@ -1,5 +1,5 @@
 import pilas
-from escenas.niveles.tutorial import EscenaNivelTurorial 
+from escenas.niveles.tutorial import EscenaPrimerDesafio
 class EscenaDeMenu(pilas.escena.Base):
 
 	def __init__(self):
@@ -9,35 +9,14 @@ class EscenaDeMenu(pilas.escena.Base):
 		pilas.fondos.Selva()
 
 		opciones = [
-			('Tutorial', self.tutorial),
-			('Comenzar a jugar', self.comenzar),
+			('Jugar', self.primer_desafio),
 			('Salir', self.salir)]
 
 		self.menu = pilas.actores.Menu(opciones)
-
-	def tutorial(self):
-		pilas.cambiar_escena(EscenaNivelTurorial())
-
-	def comenzar(self):
-		pilas.cambiar_escena(EscenaDeJuego())
+	
+	def primer_desafio(self):
+		pilas.cambiar_escena(EscenaPrimerDesafio())
 
 	def salir(self):
 		import sys
 		sys.exit(0)
-
-
-class EscenaDeJuego(pilas.escena.Base):
-
-    def __init__(self):
-        pilas.escena.Base.__init__(self)
-
-    def iniciar(self):
-        self.pingu = pilas.actores.Pingu()
-        pilas.fondos.Pasto()
-        pilas.avisar("Pulsa la tecla 'q' para regresar al menu...")
-
-        pilas.eventos.pulsa_tecla.conectar(self.cuando_pulsa_tecla)
-
-    def cuando_pulsa_tecla(self, evento):
-        if evento.texto == u'q':
-            pilas.cambiar_escena(EscenaDeMenu())

@@ -6,6 +6,19 @@ import pilas
 
 from personajes.conejo import Conejo
 
+class EscenaPrimerDesafio(pilas.escena.Base):
+	def __init__(self):
+		pilas.escena.Base.__init__(self)
+
+	def iniciar(self):
+		pilas.fondos.Selva()
+
+		opciones = [('Comenzar a jugar', self.primer_desafio)]
+
+		self.menu = pilas.actores.Menu(opciones)
+	def primer_desafio(self):
+		pilas.cambiar_escena(EscenaNivelTurorial())
+
 class EscenaNivelTurorial(pilas.escena.Base):
 
     def __init__(self):
@@ -27,7 +40,8 @@ class EscenaNivelTurorial(pilas.escena.Base):
 
         pilas.escena_actual().colisiones.agregar(conejo, bananas, self.llevar)
 
-        pilas.avisar("Usa los direccionales para controlar al personaje.")
+        pilas.avisar("""Usa los direccionales para controlar al personaje.
+		Presiona la barra espaciadora para arojar ojotas y eliminar obstaculos""")
 
     def crear_mapa(self, filas=15, columnas=20):
         mapa = pilas.actores.Mapa(filas=filas, columnas=columnas)
