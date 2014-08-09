@@ -10,7 +10,7 @@ import pilas
 class Conejo(pilas.actores.Martian):
     def __init__(self, *args, **kwags):
         pilas.actores.Martian.__init__(self, *args, **kwags)
-        self.imagen = pilas.imagenes.cargar_grilla("logo.png", 1)
+        self.imagen = pilas.imagenes.cargar_grilla("conejothon.png", 1)
 
 
 # Mapa
@@ -67,7 +67,7 @@ pilas.iniciar()
 pilas.fondos.DesplazamientoHorizontal()
 
 mapa = crear_mapa()
-martian = pilas.actores.Martian(mapa, 14, 19)
+martian = Conejo(mapa)
 martian.aprender(pilas.habilidades.SiempreEnElCentro)
 
 pilas.avisar("Usa los direccionales para controlar al personaje.")
