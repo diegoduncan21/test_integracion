@@ -4,13 +4,61 @@ import sys
 sys.path.insert(0, "..")
 import pilas
 
+from pilas.actores import Actor
+
+# Objectos
+
+
+class Ojota(Actor):
+    def __init__(self,x=0,y=0,rotacion=0,velocidad_maxima=6,
+                 angulo_de_movimiento=90):
+
+        """
+        Construye la Ojota.
+
+        :param x: Posición x del proyectil.
+        :param y: Posición y del proyectil.
+        :param rotacion: Angulo de rotación del Actor.
+        :param velocidad_maxima: Velocidad máxima que alcanzará el proyectil.
+        :param angulo_de_movimiento: Angulo en que se moverá el Actor..
+
+        """
+        imagen = pilas.imagenes.cargar('chancleta.png')
+        Actor.__init__(self, imagen)
+        self.x = x
+        self.y = y
+        self.rotacion = rotacion
+        self.escala = 2
+        self.radio_de_colision = 20
+
+        self.hacer(pilas.comportamientos.Proyectil(velocidad_maxima=velocidad_maxima,
+                                                   aceleracion=1,
+                                                   angulo_de_movimiento=angulo_de_movimiento,
+                                                   gravedad=0))
+
+    def actualizar(self):
+        self.rotacion += 13
+
+
+
 # Personajes
 
 
 class Conejo(pilas.actores.Martian):
     def __init__(self, *args, **kwags):
         pilas.actores.Martian.__init__(self, *args, **kwags)
-        self.imagen = pilas.imagenes.cargar_grilla("conejothon.png", 1)
+        self.imagen = pilas.imagenes.cargar_grilla("conejothon.png", 12)
+        self.definir_cuadro(0)
+        self.mapa = mapa
+        self.municion = Ojota
+        self.aprender(pilas.habilidades.Disparar,
+                      municion=Ojota,
+                      angulo_salida_disparo=-90,
+                      frecuencia_de_disparo=8,
+                      offset_disparo=(25,0),
+                      offset_origen_actor=(25,23))
+        self.velocidad = 8
+
 
 
 # Mapa
@@ -18,15 +66,6 @@ class Conejo(pilas.actores.Martian):
 
 def crear_mapa(filas=15, columnas=20):
     mapa = pilas.actores.Mapa(filas=filas, columnas=columnas)
-
-    # Plataforma superior (la que esta en medio de la pantalla)
-    # mapa.pintar_bloque(4, 6, 0)
-    # mapa.pintar_bloque(5, 7, 1)
-    # mapa.pintar_bloque(6, 8, 1)
-    # mapa.pintar_bloque(7, 9, 1)
-    # mapa.pintar_bloque(8, 10, 1)
-    # mapa.pintar_bloque(9, 11, 1)
-    # mapa.pintar_bloque(10, 12, 2)
 
     # Plataforma pequeña, mas abajo que la anterior.
     mapa.pintar_bloque(12, 12, 0)
@@ -42,15 +81,12 @@ def crear_mapa(filas=15, columnas=20):
     # bloque derecha
     mapa.pintar_bloque(9, 18, 2)
 
-    mapa.pintar_bloque(13, 0, 7, True)
-    mapa.pintar_bloque(12, 0, 7, True)
-    mapa.pintar_bloque(11, 0, 7, True)
-    mapa.pintar_bloque(10, 0, 7, True)
-
-    mapa.pintar_bloque(13, 19, 7, True)
-    mapa.pintar_bloque(12, 19, 7, True)
-    mapa.pintar_bloque(11, 19, 7, True)
-    mapa.pintar_bloque(10, 19, 7, True)
+    # topes
+    for tope in range(15):
+        # izq
+        mapa.pintar_bloque(tope, 0, 7, True)
+        # der
+        mapa.pintar_bloque(tope, 19, 7, True)
 
     # Pinta todo el suelo
     for columna in range(0, 15):
@@ -62,15 +98,26 @@ def crear_mapa(filas=15, columnas=20):
 
     return mapa
 
-pilas.iniciar()
+def llevar(conejo, banana):
+    banana.aprender(pilas.habilidades.Imitar, conejo)
 
-pilas.fondos.DesplazamientoHorizontal()
+pilas.iniciar(usar_motor='qtgl')
+
+fondo = pilas.fondos.DesplazamientoHorizontal()
+
+fondo.agregar("selva.jpg")
 
 mapa = crear_mapa()
-martian = Conejo(mapa)
-martian.aprender(pilas.habilidades.SiempreEnElCentro)
+conejo = Conejo(mapa)
+conejo.aprender(pilas.habilidades.SiempreEnElCentro)
+
+banana1 = pilas.actores.Banana(x=-200, y=100)
+
+bananas = [banana1]
+
+pilas.escena_actual().colisiones.agregar(conejo, bananas, llevar)
 
 pilas.avisar("Usa los direccionales para controlar al personaje.")
-pilas.ejecutar()
+# pilas.avisar("Usa espacio para tirar una ojota.")
 
 pilas.ejecutar()
