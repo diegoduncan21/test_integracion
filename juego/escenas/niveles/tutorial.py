@@ -135,14 +135,12 @@ class EscenaGanador(pilas.escena.Base):
 
 
 class EscenaPerdedor(pilas.escena.Base):
-    def __init__(self):
-        pilas.escena.Base.__init__(self)
+	def __init__(self):
+		pilas.escena.Base.__init__(self)
 
-    def iniciar(self):
-        pilas.fondos.Selva()
-
-        opciones = [('Se termino el tiempo!\nIntentalo de nuevo...', self.primer_desafio)]
-
-        self.menu = pilas.actores.Menu(opciones)
-    def primer_desafio(self):
-        pilas.cambiar_escena(EscenaPrimerDesafio())
+	def iniciar(self):
+		pilas.fondos.Selva()
+		opciones = [('Se termino el tiempo!\nIntentalo de nuevo...', self.primer_desafio)]
+		self.menu = pilas.actores.Menu(opciones)
+	def primer_desafio(self):
+		pilas.cambiar_escena(EscenaPrimerDesafio())

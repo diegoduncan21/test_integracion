@@ -1,5 +1,6 @@
 import pilas
 from escenas.niveles.tutorial import EscenaPrimerDesafio
+from bases.menus import MenuDeIconos
 class EscenaDeMenu(pilas.escena.Base):
 
 	def __init__(self):
@@ -7,13 +8,21 @@ class EscenaDeMenu(pilas.escena.Base):
 
 	def iniciar(self):
 		pilas.fondos.Selva()
-
+		"""
 		opciones = [
-			('Jugar', self.primer_desafio),
-			('Salir', self.salir)]
+			('imagenes/menus/principal/jugar.png', "", [self.primer_desafio]),
+			('imagenes/menus/principal/salir.png', "", [self.salir])
+		]
+		"""
+		
+		opciones = [
+			('imagenes/menus/principal/jugar.png', self.primer_desafio), 
+			('imagenes/menus/principal/salir.png', self.salir), 
+		]
+		
+		#self.menu = pilas.actores.Menu(opciones)
+		self.menu = MenuDeIconos(opciones)
 
-		self.menu = pilas.actores.Menu(opciones)
-	
 	def primer_desafio(self):
 		pilas.cambiar_escena(EscenaPrimerDesafio())
 
