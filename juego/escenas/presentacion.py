@@ -16,8 +16,8 @@ class EscenaDeMenu(pilas.escena.Base):
 		"""
 		
 		opciones = [
-			('imagenes/menus/principal/jugar.png', self.primer_desafio), 
-			('imagenes/menus/principal/salir.png', self.salir), 
+			('imagenes/menus/principal/jugar.png', self.primer_desafio, 100, 100), 
+			('imagenes/menus/principal/salir.png', self.salir, 600, 200), 
 		]
 		
 		#self.menu = pilas.actores.Menu(opciones)
