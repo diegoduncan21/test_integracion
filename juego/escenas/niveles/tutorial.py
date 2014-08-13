@@ -4,11 +4,7 @@ import sys
 sys.path.insert(0, "..")
 import pilas
 
-from personajes.conejo import Conejo
-from personajes.carne import Carne
-from personajes.caldera import Caldera
-from personajes.barra import Barra
-from personajes.guiso import Guiso
+from personajes import Caldera, Carne, Conejo, Guiso
 
 
 class EscenaPrimerDesafio(pilas.escena.Base):
@@ -19,13 +15,13 @@ class EscenaPrimerDesafio(pilas.escena.Base):
         pilas.fondos.Selva()
 
         guiso = Guiso(y=100)
-        barra = Barra(y=-60)
 
         opciones = [('Comenzar a jugar', self.primer_desafio)]
 
         self.menu = pilas.actores.Menu(opciones,
                                        color_resaltado=pilas.colores.verde,
                                        y=-150)
+
     def primer_desafio(self):
         pilas.cambiar_escena(EscenaNivelTurorial())
 
@@ -38,8 +34,7 @@ class EscenaNivelTurorial(pilas.escena.Base):
     def iniciar(self):
 
         fondo = pilas.fondos.DesplazamientoHorizontal()
-        fondo.agregar("selva.jpg")
-        fondo.agregar("verduras_2/barreta2.png")
+        fondo.agregar("imagenes/fondos/selva.jpg")
 
         mapa = self.crear_mapa()
 
@@ -53,7 +48,7 @@ class EscenaNivelTurorial(pilas.escena.Base):
         conejo.aprender(pilas.habilidades.SiempreEnElCentro)
 
         banana = pilas.actores.Banana(x=-200, y=100)
-        self.carne = carne =  Carne(x=250, y=-100)
+        self.carne = carne = Carne(x=250, y=-100)
 
         self.caldera = caldera = Caldera(x=-200, y=-185)
 
@@ -116,7 +111,7 @@ class EscenaNivelTurorial(pilas.escena.Base):
             pilas.cambiar_escena(EscenaGanador())
         else:
             pilas.cambiar_escena(EscenaPerdedor())
-        
+
 
 class EscenaGanador(pilas.escena.Base):
     def __init__(self):
@@ -129,18 +124,21 @@ class EscenaGanador(pilas.escena.Base):
             ('Genial! Conseguiste todos los ingredientes!\nJuega el siguiente nivel...', self.primer_desafio)
         ]
 
-        self.menu = pilas.actores.Menu(opciones)
+        self.menu = pilas.actores.Menu(opciones,
+                                       color_resaltado=pilas.colores.verde)
     def primer_desafio(self):
         pilas.cambiar_escena(EscenaPrimerDesafio())
 
 
 class EscenaPerdedor(pilas.escena.Base):
-	def __init__(self):
-		pilas.escena.Base.__init__(self)
+    def __init__(self):
+        pilas.escena.Base.__init__(self)
 
-	def iniciar(self):
-		pilas.fondos.Selva()
-		opciones = [('Se termino el tiempo!\nIntentalo de nuevo...', self.primer_desafio)]
-		self.menu = pilas.actores.Menu(opciones)
-	def primer_desafio(self):
-		pilas.cambiar_escena(EscenaPrimerDesafio())
+    def iniciar(self):
+        pilas.fondos.Selva()
+        opciones = [('Se termino el tiempo!\nIntentalo de nuevo...', self.primer_desafio)]
+        self.menu = pilas.actores.Menu(opciones,
+                                       color_resaltado=pilas.colores.rojo)
+
+    def primer_desafio(self):
+        pilas.cambiar_escena(EscenaPrimerDesafio())

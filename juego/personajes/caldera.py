@@ -5,11 +5,6 @@ from pilas.actores import Actor
 
 
 class Caldera(Actor):
-    """Muestra una carldera que se combina (temáticamente) con un actor.
-
-    .. image:: verduras/carldera.png
-
-    """
 
     def __init__(self, x=0, y=0):
         """ Constructor de la carldera.
@@ -20,7 +15,8 @@ class Caldera(Actor):
         :type y: int
         """
         Actor.__init__(self, x=x, y=y)
-        self.imagen = pilas.imagenes.cargar_grilla("caldera.png", 1)
+        self.imagen = pilas.imagenes.cargar_grilla(
+            "imagenes/personajes/caldera.png", 1)
         self.definir_cuadro(0)
         self.radio_de_colision = 30
         self.ingredientes = []

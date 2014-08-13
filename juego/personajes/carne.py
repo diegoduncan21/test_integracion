@@ -5,12 +5,7 @@ from pilas.actores import Actor
 
 
 class Carne(Actor):
-    """Muestra una carne que se combina (temáticamente) con un actor.
-
-    .. image:: verduras/carne.png
-
-    """
-
+    
     def __init__(self, x=0, y=0):
         """ Constructor de la carne.
 

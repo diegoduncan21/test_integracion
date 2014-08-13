@@ -5,11 +5,6 @@ from pilas.actores import Actor
 
 
 class Guiso(Actor):
-    """Muestra una guiso que se combina (temáticamente) con un actor.
-
-    .. image:: verduras/guiso.png
-
-    """
 
     def __init__(self, x=0, y=0):
         """ Constructor de la guiso.
@@ -20,7 +15,8 @@ class Guiso(Actor):
         :type y: int
         """
         Actor.__init__(self, x=x, y=y)
-        self.imagen = pilas.imagenes.cargar_grilla("guiso.png", 1)
+        self.imagen = pilas.imagenes.cargar_grilla(
+            "imagenes/personajes/guiso.png", 1)
         self.definir_cuadro(0)
         self.radio_de_colision = 30
         self.ingredientes = []

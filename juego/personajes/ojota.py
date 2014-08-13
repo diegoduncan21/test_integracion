@@ -4,7 +4,7 @@ from pilas.actores import Actor
 
 
 class Ojota(Actor):
-    def __init__(self,x=0,y=0,rotacion=0,velocidad_maxima=6,
+    def __init__(self, x=0, y=0, rotacion=0, velocidad_maxima=6,
                  angulo_de_movimiento=90):
 
         """
@@ -17,7 +17,7 @@ class Ojota(Actor):
         :param angulo_de_movimiento: Angulo en que se moverá el Actor..
 
         """
-        imagen = pilas.imagenes.cargar('chancleta.png')
+        imagen = pilas.imagenes.cargar('imagenes/proyectiles/chancleta.png')
         Actor.__init__(self, imagen)
         self.x = x
         self.y = y
